@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     fullName:{
         type:String,
-        required:true,
+        default:" "
     },
     username:{
         type:String,
@@ -16,8 +16,7 @@ const userSchema = new mongoose.Schema({
     },
     gender:{
         type:String,
-        required:true,
-        enum:['male','female','other'],
+        default:"Unspecified"
     },
     profilePic:{
         type:String,
