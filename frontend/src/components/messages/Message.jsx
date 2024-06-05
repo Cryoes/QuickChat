@@ -1,16 +1,26 @@
 import React from 'react'
-const imgUrl = './blankProfile.png'
+import {useAuthContext} from '../../context/AuthContext.jsx'
+import useConversation from '../../zustand/useConversation'
+import { extractTime } from '../../utils/extractTime.js'
 
-const Message = () => {
+const Message = ({message}) => {
+  const {authUser} = useAuthContext()
+  const {selectedConversation} = useConversation
+  const formattedTime = extractTime(message.createdAt)
+  const fromMe = message.senderId === authUser._id
+  const chatClassName = fromMe ? 'chat-end' : 'chat-start'
+  const profilePic = '/blankProfile.png'
+  const bubbleBgColor = fromMe ? 'bg-blue-500' : "bg-gray-900"
+
   return (
-    <div className ="chat chat-end">
+    <div className ={`chat ${chatClassName}`}>
         <div className ='chat-image avatar'>
             <div className = 'w-10 rounded-full'>
-            <img src ={imgUrl} />
+            <img src ={profilePic} />
             </div>
         </div>
-        <div className ={'chat-bubble text-white bg-blue-600'}>Hi! What is upp?</div>
-        <div className = 'chat-footer text-xs flex gap-1 items-center'>2:25am</div>
+        <div className ={`chat-bubble text-white ${bubbleBgColor}`}>{message.message}</div>
+        <div className = 'chat-footer text-xs flex gap-1 items-center'>{formattedTime}</div>
     </div>
   )
 }
